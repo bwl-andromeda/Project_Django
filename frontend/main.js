@@ -43,7 +43,6 @@ class Student {
 
 // Пример использования классов:
 
-// Создание студентов
 const student1 = new Student('Иван', 20, 85);
 const student2 = new Student('Мария', 19, 92);
 const student3 = new Student('Алексей', 21, 78);

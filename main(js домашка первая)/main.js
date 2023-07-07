@@ -10,15 +10,15 @@ class Student {
     };
   
     increaseScore = (amount) => {
-      this.GPA += amount;
+      this.averageScore += amount;
     };
   
     getStatus = () => {
-      if (this.GPA >= 90) {
+      if (this.averageScore > 90) {
         return 'отличник';
-      } else if (this.GPA >= 75) {
+      } else if (this.averageScore > 75) {
         return 'хорошист';
-      } else if (this.GPA >= 60) {
+      } else if (this.averageScore > 60) {
         return 'троечник';
       } else {
         return 'неудовлетворительно';
@@ -29,15 +29,15 @@ class Student {
     static getMaxScore = (students) => {
       let maxScore = 0;
       for (const student of students) {
-        if (student.GPA > maxScore) {
-          maxScore = student.GPA;
+        if (student.averageScore > maxScore) {
+          maxScore = student.averageScore;
         }
       }
       return maxScore;
     };
   
     static filterByScore = (students, score) => {
-      return students.filter((student) => student.GPA > score);
+      return students.filter((student) => student.averageScore > score);
     };
   }
 
@@ -60,3 +60,20 @@ console.log(Student.getMaxScore(students)); // выводит 95
 // Фильтрация студентов по среднему баллу
 const filteredStudents = Student.filterByScore(students, 80);
 console.log(filteredStudents); // выводит [student2, student4]
+
+
+
+
+
+// const delay = (time = 1000) => {
+//   const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve();
+//     }, time)
+// })
+//   return promise;
+// }
+
+// delay(1000).then(() => {
+//   console.log('Присоединение завершено');
+// })

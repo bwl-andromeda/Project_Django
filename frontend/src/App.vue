@@ -1,32 +1,31 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+  <div class="t-main-block">
+    <AppHeaders></AppHeaders>
+    <AppContent></AppContent>
   </div>
 </template>
 
+
+<script>
+import AppHeaders from "@/components/AppHeaders.vue";
+import AppContent from "@/components/AppContent.vue";
+export default {
+  components: { AppHeaders,AppContent },
+  name: 'App',
+  data() {
+      return {}
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+.t-btn {
+        margin-left: 10px;
+        background-color: rgb(213, 207, 207);
+        color: black;
+        border-radius: 5px;
+        padding: 5px 10px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0,  0.2);
+    }
+    
 </style>

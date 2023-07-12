@@ -26,7 +26,7 @@
             <td>{{ book.genre }}</td>
             <td>
               <div class="centered">
-                <button @click="$emit('remove', book)">Удалить</button>
+                <x-button @click="$emit('remove', book)" style="background-color: red; border: red;">Удалить</x-button>
               </div>
             </td>
           </tr>

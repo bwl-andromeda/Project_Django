@@ -62,10 +62,16 @@ export default {
   },
   computed: {
     sortedBooks() {
-      return [...this.books].sort((book1, book2) =>
-        book1[this.selectedSort]?.localeCompare(book2[this.selectedSort])
-      );
-    }
+      return [...this.books].sort((book1, book2) => {
+        if (book1[this.selectedSort] < book2[this.selectedSort]) {
+          return -1;
+        }
+        if (book1[this.selectedSort] > book2[this.selectedSort]) {
+          return 1;
+        }
+        return 0;
+      });
+    },
   },
   methods: {
     addBook(book) {
@@ -107,5 +113,4 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
-
 </style>

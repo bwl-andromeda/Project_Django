@@ -1,42 +1,31 @@
 <template>
+  <div>
     <div class="x-header">
-      <strong>Иванов Никита</strong>
-      <button class="t-btn" @click="showImage">{{ buttonLabel1 }}</button>
-      <div v-if="showPicture">
-        <img :src="imagePath" alt="Картинка">
-      </div>
+      <strong style = 'margin: 0.1px auto'>Иванов Никита</strong>
+      - Привет! Как жизнь у тебя?
+      - Жизнь у меня хорошая, даже с элементом роскоши.
+      - Это как?
+      - Ну каждый день новый пакетик чая!
+      <x-button style="background-color: red; border: 0.5px red">Выход</x-button>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'Header',
-    data() {
-      return {
-        showPicture: false,
-        imagePath: require('@/components/assets/images/images.jpg'),
-        buttonLabel1: 'Нажми меня и тебе будет смешно'
-      };
-    },
-    methods: {
-      showImage() {
-        this.showPicture = true;
-        this.imagePath = require('@/components/assets/images/images.jpg');
-        this.buttonLabel1 = 'Ха-ха!';
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .x-header {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 5px;
-    background: linear-gradient(#9595b6, #5a567f);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-  }
-  </style>
-  
+  </div>
+</template>
+
+<script>
+export default {
+  name: "AppHeader",
+}
+</script>
+
+<style scoped>
+.x-header {
+   padding: 5px;
+   margin: 10px auto;
+   max-height: 30px;
+   display: flex;
+   justify-content: center;
+   border-radius: 10px;
+   background: white;
+   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.6);
+}
+</style>

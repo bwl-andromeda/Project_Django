@@ -57,7 +57,7 @@
 
 <script>
 import {validationMixin} from 'vuelidate'
-import {required, minLength, between} from 'vuelidate/lib/validators'
+import {required, minLength, between, maxLength} from 'vuelidate/lib/validators'
 
 export default {
   name: "AppCreateForm",
@@ -78,7 +78,7 @@ export default {
     book: {
       title: {required, minLength: minLength(6)},
       year: {required, between: between(1900, 2023)},
-      isbn: {required, minLength: minLength(13)},
+      isbn: {required, minLength: minLength(13), maxLength: maxLength(13)},
     }
   },
   methods: {

@@ -62,7 +62,7 @@ export default {
 }
 .button-bucket {
   position: absolute;
-  top: 59.4px;
+  top: 55.1px;
   right: 75px;
   margin-left: 15px;
   bottom: 11px;

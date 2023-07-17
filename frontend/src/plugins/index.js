@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '@/store';
 
 const instance = axios.create({
-    baseURL: 'https://mynikitaivanov1.pythonanywhere.com/'
+    baseURL: ''
 });
 
 instance.interceptors.request.use(

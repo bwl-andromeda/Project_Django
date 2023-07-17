@@ -8,7 +8,8 @@
       <AppCreateForm v-if="showForm" @create="addBook" @close="closeCreateForm"></AppCreateForm>
     </div>
     <div v-else>
-      <button class="create-button-2" v-show="!editingBook && !showForm" @click.stop="showForm = true">Хотите добавить еще 1 книгу?</button>
+      <button class="create-button-2" v-show="!editingBook && !showForm" @click.stop="showForm = true">Хотите добавить еще
+        1 книгу?</button>
       <div v-if="!editingBook && !showForm">
         <AppTable :books="books" @delete="deleteBook" @edit="editBook"></AppTable>
       </div>
@@ -82,6 +83,7 @@ export default {
     filter: hue-rotate(360deg);
   }
 }
+
 .create-button-2 {
   box-shadow: 0 0 50px #00eeff;
   background: #0ef;
@@ -96,9 +98,11 @@ export default {
   font-size: 14px;
   cursor: pointer;
 }
+
 .create-button-2:hover {
   animation: animate 3s linear infinite;
 }
+
 .button-form {
   margin-top: 100px;
   display: flex;
@@ -129,5 +133,4 @@ export default {
   border: none;
   outline: none;
   margin-top: 10px;
-}
-</style>
+}</style>

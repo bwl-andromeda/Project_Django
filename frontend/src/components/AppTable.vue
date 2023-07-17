@@ -24,8 +24,8 @@
           <td>{{ book.language }}</td>
           <td>{{ book.genre }}</td>
           <td class="button-wrapper">
-            <button class="button-edit" @click="editBook(book)">✎</button>
-            <button class="button-bucket" @click="deleteBook(book)">🗑</button>
+            <button class="button-edit" @click="editBook(book.id)">✎</button>
+            <button class="button-bucket" @click="deleteBook(book.id)">🗑</button>
           </td>
         </tr>
       </tbody>
@@ -43,11 +43,11 @@ export default {
     }
   },
   methods: {
-    deleteBook(id) {
-      this.$emit("delete", id);
+    deleteBook(book) {
+      this.$emit("delete", book);
     },
-    editBook(id) {
-      this.$emit("edit", id);
+    editBook(book) {
+      this.$emit("edit", book);
     }
   }
 };

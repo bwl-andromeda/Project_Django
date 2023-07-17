@@ -44,7 +44,7 @@
               <label>Жанр:</label>
             </div>
             <div>
-              <button class="create-button" @click="submitForm">Добавить</button>
+              <button class="create-button" @click="submitForm">Сохранить изменения</button>
             </div>
             <button class="close-button" @click.prevent="closeForm">⇦</button>
           </form>

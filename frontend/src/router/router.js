@@ -5,6 +5,7 @@ export default new VueRouter({
     routes: [
         {
             path: '/',
+            name: 'Home',
             component: () => import ('@/pages/HomePage.vue'),
             meta: {requiresAuth: true}
         },

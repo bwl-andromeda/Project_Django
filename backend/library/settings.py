@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-pr)*w%(*czm-hg@c^9hr2^(tyfo74h0id3m(5cz-87nw*zi5&q
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'torchhik1337.pythonanywhere.com',
-    'www.torchhik1337.pythonanywhere.com',
+    'bujist.pythonanywhere.com',
+    'www.bujist.pythonanywhere.com',
     ]
 
 # Application definition

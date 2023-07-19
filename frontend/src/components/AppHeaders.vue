@@ -9,9 +9,7 @@
         </div>
         <div class="t-menu">
           <ul>
-            <li><a href=""> Home </a></li>
-            <li><a href=""> Анекдоты </a></li>
-            <li><button> Exit </button></li>
+            <li><button @click="logOut"> Exit </button></li>
           </ul>
         </div>
       </div>
@@ -22,7 +20,16 @@
 <script>
 export default {
   name: "AppHeader",
-}
+  data() {
+    return {};
+  },
+  methods: {
+    logOut() {
+      this.$store.commit('removeToken')
+      this.$router.push('/login')
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -41,17 +48,20 @@ button {
   outline: none;
   margin-top: 10px;
 }
+
 button:hover {
   box-shadow: 0 0 15px #0ef;
   transition: 0.5s;
   transform: translateY(5px);
   color: white;
 }
+
 @keyframes animate {
   100% {
     filter: hue-rotate(360deg);
   }
 }
+
 .all_header_menu {
   animation: animate 3s linear infinite;
 }
@@ -85,10 +95,12 @@ header {
   text-decoration: none;
   margin-right: 25px;
 }
+
 .t-menu a:hover {
   cursor: pointer;
   color: aquamarine;
 }
+
 .logo h1 {
   margin-right: 10px;
   text-align: left;
@@ -97,5 +109,4 @@ header {
   font-size: 30px;
   color: white;
   text-decoration: none;
-}
-</style>
+}</style>

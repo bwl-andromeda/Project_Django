@@ -2,15 +2,15 @@ import axios from 'axios';
 import store from '@/store';
 
 const instance = axios.create({
-    baseURL: ''
+    baseURL: 'https://bujist.pythonanywhere.com/'
 });
 
 instance.interceptors.request.use(
     (config) => {
-        const token = store.state.token;
+        const token = localStorage.getItem('token');
 
         if (token) {
-            config.headers.Authorization = `Token ${token}`;
+            config.headers.Authorization = `Token ${localStorage.getItem('token')}`
         }
 
         return config

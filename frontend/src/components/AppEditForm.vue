@@ -3,7 +3,7 @@
     <div class="center-wrapper">
       <div class="wrapper">
         <div class="form-wrapper-sign-in">
-          <form @submit.prevent="submitForm">
+          <form @submit.prevent="updateBook">
             <h2>Параметры книги:</h2>
             <div class="input-group">
               <input type="text" v-model.trim="book.title" />
@@ -18,33 +18,25 @@
               <p class="warning-dialogs" v-if="$v.book.year.$dirty && !$v.book.year.between">Год должен быть между 1900 и 2023</p>
             </div>
             <div class="input-group">
-              <input type="number" v-model.number="book.isbn" />
-              <label>ISBN:</label>
-              <p class="warning-dialogs" v-if="$v.book.isbn.$dirty && !$v.book.isbn.minLength">ISBN должен состоять из 13 символов</p>
-            </div>
-            <div class="input-group">
               <select v-model.trim="book.author">
-                <option value=""></option>
-                <!-- Add options for authors here -->
+                <option v-for="author in authors" :key="author.id" :value="author.id">{{ author.name }}</option>
               </select>
               <label>Автор:</label>
             </div>
             <div class="input-group">
               <select v-model.trim="book.language">
-                <option value=""></option>
-                <!-- Add options for languages here -->
+                <option v-for="language in languages" :key="language.id" :value="language.id">{{ language.name }}</option>
               </select>
               <label>Язык:</label>
             </div>
-            <div class="input-group">
+            <!-- <div class="input-group">
               <select v-model.trim="book.genre">
-                <option value=""></option>
-                <!-- Add options for genres here -->
+                <option v-for="genre in genres" :key="genre.id" :value="genre.id">{{ genre.name }}</option>
               </select>
               <label>Жанр:</label>
-            </div>
+            </div> -->
             <div>
-              <button class="create-button" @click="submitForm">Сохранить изменения</button>
+              <button class="create-button" @click="updateBook">Сохранить изменения</button>
             </div>
             <button class="close-button" @click.prevent="closeForm">⇦</button>
           </form>
@@ -55,8 +47,9 @@
 </template>
 
 <script>
-import { validationMixin } from "vuelidate";
-import { required, minLength, between } from "vuelidate/lib/validators";
+import { validationMixin } from 'vuelidate';
+import { required, minLength, between } from 'vuelidate/lib/validators';
+import axios from 'axios';
 
 export default {
   name: "AppEditForm",
@@ -64,56 +57,56 @@ export default {
   props: {
     book: {
       type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      editingBook: null
-    };
+      required: true,
+    },
+    authors: {
+      type: Array,
+      required: true,
+    },
+    // genres: {
+    //   type: Array,
+    //   required: true,
+    // },
+    languages: {
+      type: Array,
+      required: true,
+    },
   },
   validations: {
     book: {
       title: { required, minLength: minLength(6) },
       year: { required, between: between(1900, 2023) },
-      isbn: { required, minLength: minLength(13) },
-    }
-  },
-  watch: {
-    book: {
-      handler(newBook) {
-        if (newBook) {
-          this.editingBook = { ...newBook };
-        } else {
-          this.resetForm();
-        }
-      },
-      immediate: true,
-      deep: true
-    }
+      author: { required },
+      language: { required },
+      genre: { required },
+    },
   },
   methods: {
-    submitForm() {
-      this.$v.$touch();
-
-      if (this.$v.$invalid) {
-        return;
+    async updateBook() {
+      try {
+        const response = await this.$ajax.put(`https://bujist.pythonanywhere.com/api/book/${this.book.id}/`, this.book);
+        this.$emit("update", response.data);
+        this.closeForm();
+      } catch (error) {
+        console.error('Ошибка при обновлении книги:', error);
       }
-
-      this.$emit("update", { ...this.editingBook });
-
-      this.resetForm();
-    },
-    resetForm() {
-      this.$v.$reset();
-      this.editingBook = null;
     },
     closeForm() {
       this.$emit("close");
-    }
-  }
+      this.$v.$reset();
+    },
+  },
+  watch: {
+    book: {
+      deep: true,
+      handler() {
+        this.$v.$touch();
+      },
+    },
+  },
 };
 </script>
+
 
 <style>
 * {

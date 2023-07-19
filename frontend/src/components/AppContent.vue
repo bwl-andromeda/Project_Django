@@ -1,21 +1,20 @@
 <template>
   <div>
-    <div v-if="books.length === 0">
+    <div v-if="books.length === 0 && authors.length === 0 && languages.length === 0">
       <div class="button-form" v-show="!showForm">
         <p>Привет, пока что в каталоге нет книг, поэтому предлагаю тебе нажать кнопку, чтобы добавить книгу!</p>
         <button class="create-button" @click.stop="showForm = true">Добавить книгу в каталог</button>
       </div>
-      <AppCreateForm v-if="showForm" @create="addBook" @close="closeCreateForm"></AppCreateForm>
+      <AppCreateForm v-if="showForm" @create="addBook" @close="closeCreateForm" :authors="authors" :languages="languages"></AppCreateForm>
     </div>
     <div v-else>
-      <button class="create-button-2" v-show="!editingBook && !showForm" @click.stop="showForm = true">Хотите добавить еще
-        1 книгу?</button>
+      <button class="create-button-2" v-show="!editingBook && !showForm" @click.stop="showForm = true">Хотите добавить еще 1 книгу?</button>
       <div v-if="!editingBook && !showForm">
-        <AppTable :books="books" @delete="deleteBook" @edit="editBook"></AppTable>
+        <AppTable :books="books" :authors="authors" :languages="languages" @delete-book="deleteBook" @edit="editBook"></AppTable>
       </div>
       <div v-if="showForm || editingBook">
-        <AppCreateForm v-if="showForm" @create="addBook" @close="closeCreateForm"></AppCreateForm>
-        <AppEditForm v-if="editingBook" :book="editingBook" @update="updateBook" @close="closeEditForm"></AppEditForm>
+        <AppCreateForm v-if="showForm" :authors="authors" :languages="languages" @create="addBook" @close="closeCreateForm"></AppCreateForm>
+        <AppEditForm v-if="editingBook" :book="editingBook" :authors="authors" :languages="languages" @update="updateBook" @close="closeEditForm"></AppEditForm>
       </div>
     </div>
   </div>
@@ -32,40 +31,75 @@ export default {
   data() {
     return {
       books: [],
+      authors: [],
+      languages: [],
       showForm: false,
       editingBook: null,
     };
   },
   methods: {
-    addBook(book) {
-      book.id = this.books.length + 1;
-      this.books.push(book);
-      this.showForm = false;
+    async fetchBooks() {
+      try {
+        const response = await this.$ajax.get('api/book/');
+        this.books = response.data;
+      } catch (error) {
+        console.error('Ошибка при получении списка книг:', error);
+      }
     },
-    deleteBook(book) {
-      const index = this.books.findIndex((b) => b.id === book.id);
-      if (index !== -1) {
-        this.books.splice(index, 1);
+    async fetchAuthors() {
+      try {
+        const response = await this.$ajax.get('https://bujist.pythonanywhere.com/api/author/');
+        this.authors = response.data;
+      } catch (error) {
+        console.error('Ошибка при получении списка авторов:', error);
+      }
+    },
+    async fetchLanguages() {
+      try {
+        const response = await this.$ajax.get('https://bujist.pythonanywhere.com/api/language/');
+        this.languages = response.data;
+      } catch (error) {
+        console.error('Ошибка при получении списка языков:', error);
+      }
+    },
+    async addBook(newBook) {
+      try {
+        const response = await this.$ajax.post('https://bujist.pythonanywhere.com/api/book/', newBook);
+        this.books.push(response.data);
+        this.showForm = false;
+      } catch (error) {
+        console.error('Ошибка при добавлении книги:', error);
+      }
+    },
+    async deleteBook(book) {
+      try {
+        await this.$ajax.delete(`https://bujist.pythonanywhere.com/api/book/${book.id}/`);
+        this.books = this.books.filter((item) => item.id !== book.id);
+      } catch (error) {
+        console.error('Ошибка при удалении книги:', error);
+      }
+    },
+    async updateBook(updatedBook) {
+      try {
+        const response = await this.$ajax.put(`https://bujist.pythonanywhere.com/api/book/${updatedBook.id}/`, updatedBook);
+        const index = this.books.findIndex((item) => item.id === response.data.id);
+        if (index !== -1) {
+          this.books.splice(index, 1, response.data);
+        }
+        this.closeEditForm();
+      } catch (error) {
+        console.error('Ошибка при обновлении книги:', error);
       }
     },
     editBook(book) {
       this.editingBook = book;
-      this.showForm = false;
-    },
-    updateBook(updatedBook) {
-      const index = this.books.findIndex((book) => book.id === updatedBook.id);
-      if (index !== -1) {
-        this.books.splice(index, 1, updatedBook);
-      }
-      this.closeEditForm();
-    },
-    closeCreateForm() {
-      this.showForm = false;
-      this.editingBook = null;
     },
     closeEditForm() {
       this.editingBook = null;
-    }
+    },
+    closeCreateForm() {
+      this.showForm = false;
+    },
   },
   watch: {
     editingBook(newValue) {
@@ -73,9 +107,15 @@ export default {
         this.showForm = false;
       }
     }
-  }
+  },
+  created() {
+    this.fetchBooks();
+    this.fetchAuthors();
+    this.fetchLanguages();
+  },
 };
 </script>
+
 
 <style scoped>
 @keyframes animate {

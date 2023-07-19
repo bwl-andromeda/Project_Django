@@ -7,7 +7,6 @@ from catalog.views import LanguageViewSet, AuthorViewSet, GenreViewSet, BookView
 router = routers.DefaultRouter()
 router.register(r'language', LanguageViewSet)
 router.register(r'author', AuthorViewSet)
-router.register(r'genre', GenreViewSet)
 router.register(r'book', BookViewSet)
 
 urlpatterns = [

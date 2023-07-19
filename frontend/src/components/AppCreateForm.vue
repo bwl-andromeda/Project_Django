@@ -9,40 +9,34 @@
               <input type="text" v-model.trim="book.title" />
               <label>Название:</label>
               <p class="warning-dialogs" v-if="$v.book.title.$dirty && !$v.book.title.required">Обязательное поле</p>
-              <p class="warning-dialogs" v-if="$v.book.title.$dirty && !$v.book.title.minLength">Здесь должно быть больше 5 символов</p>
+              <p class="warning-dialogs" v-if="$v.book.title.$dirty && !$v.book.title.minLength">Здесь должно быть больше
+                5 символов</p>
             </div>
             <div class="input-group">
               <input type="number" v-model.number="book.year" />
               <label>Год:</label>
               <p class="warning-dialogs" v-if="$v.book.year.$dirty && !$v.book.year.required">Обязательное поле</p>
-              <p class="warning-dialogs" v-if="$v.book.year.$dirty && !$v.book.year.between">Год должен быть между 1900 и 2023</p>
-            </div>
-            <div class="input-group">
-              <input type="number" v-model.number="book.isbn" />
-              <label>ISBN:</label>
-              <p class="warning-dialogs" v-if="$v.book.isbn.$dirty && !$v.book.isbn.minLength">ISBN должен состоять из 13 символов</p>
+              <p class="warning-dialogs" v-if="$v.book.year.$dirty && !$v.book.year.between">Год должен быть между 1900 и
+                2023</p>
             </div>
             <div class="input-group">
               <select v-model.trim="book.author">
-                <option value=""></option>
-                <!-- Add options for authors here -->
+                <option v-for="author in authors" :key="author.id" :value="author.id">{{ author.name }}</option>
               </select>
               <label>Автор:</label>
             </div>
             <div class="input-group">
               <select v-model.trim="book.language">
-                <option value=""></option>
-                <!-- Add options for languages here -->
+                <option v-for="language in languages" :key="language.id" :value="language.id">{{ language.name }}</option>
               </select>
               <label>Язык:</label>
             </div>
-            <div class="input-group">
+            <!-- <div class="input-group">
               <select v-model.trim="book.genre">
-                <option value=""></option>
-                <!-- Add options for genres here -->
+                <option v-for="genre in genres" :key="genre.id" :value="genre.id">{{ genre.name }}</option>
               </select>
-              <label>Жанр:</label>
-            </div>
+              <label>Жанр:</label> -->
+            <!-- </div> -->
             <div>
               <button class="create-button" @click="addBook">Добавить</button>
             </div>
@@ -54,65 +48,84 @@
   </div>
 </template>
 
-
 <script>
-import {validationMixin} from 'vuelidate'
-import {required, minLength, between, maxLength} from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate';
+import { required, minLength, between } from 'vuelidate/lib/validators';
+import axios from 'axios';
 
 export default {
   name: "AppCreateForm",
   mixins: [validationMixin],
+  props: {
+    authors: {
+      type: Array,
+      required: true,
+    },
+    // genres: {
+    //   type: Array,
+    //   required: true,
+    // },
+    languages: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       book: {
         title: "",
         year: "",
-        isbn: "",
         author: "",
         language: "",
-        genre: ""
+        // genre: "",
       },
     };
   },
   validations: {
     book: {
-      title: {required, minLength: minLength(6)},
-      year: {required, between: between(1900, 2023)},
-      isbn: {required, minLength: minLength(13), maxLength: maxLength(13)},
-    }
+      title: { required, minLength: minLength(6) },
+      year: { required, between: between(1900, 2023) },
+      author: { required },
+      language: { required },
+      genre: { required },
+    },
   },
   methods: {
-    addBook() {
-      this.$v.$touch()
-
-      if (this.$v.$invalid) {
-        return
+    async addBook() {
+      try {
+        // Убедитесь, что значение genre передается в запросе
+        const newBook = { ...this.book, genre: this.book.genre };
+        const response = await this.$ajax.post('https://bujist.pythonanywhere.com/api/book/', newBook);
+        this.$emit("create", response.data);
+        this.closeForm();
+      } catch (error) {
+        console.error('Ошибка при добавлении книги:', error);
       }
-      this.$emit("create", {...this.book});
-
-      this.book.title = "";
-      this.book.year = "";
-      this.book.isbn = "";
-      this.book.author = "";
-      this.book.language = "";
-      this.book.genre = "";
     },
+
     closeForm() {
-      this.$emit("close"); // Эмитируйте событие "close" для уведомления компонента-родителя о закрытии формы
-      this.$v.$reset(); // Сброс состояния валидации при закрытии формы
+      this.$emit("close");
+      this.$v.$reset();
       this.book = {
         title: "",
         year: "",
-        isbn: "",
         author: "",
         language: "",
-        genre: ""
+        // genre: "",
       };
-    }
-
-  }
+    },
+  },
+  watch: {
+    book: {
+      deep: true,
+      handler() {
+        this.$v.$touch();
+      },
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 * {
@@ -211,8 +224,8 @@ h2 {
   outline: none;
 }
 
-.input-group input:focus ~ label,
-.input-group input:hover ~ label {
+.input-group input:focus~label,
+.input-group input:hover~label {
   top: -1px;
 }
 

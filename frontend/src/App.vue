@@ -6,25 +6,10 @@
 <script>
 import AppHeaders from "@/components/AppHeaders.vue";
 import AppContent from "@/components/AppContent.vue";
-import axios from "axios"
 
 export default {
   components: {AppHeaders, AppContent},
-  name: 'App',
-  data() {
-    return {}
-  },
-  beforeCreate() {
-      this.$store.commit('initializeStore')
-
-      const token = this.$store.state.token
-
-      if (token) {
-        axios.defaults.headers.common['Authorization'] = "Token " + token
-      } else {
-        axios.defaults.headers.common['Authorization'] = ""
-      }
-    }
+  name: 'App'
   }
 </script>
 

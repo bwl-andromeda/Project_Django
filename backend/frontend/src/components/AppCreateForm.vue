@@ -95,7 +95,7 @@ export default {
       try {
         // Убедитесь, что значение genre передается в запросе
         const newBook = { ...this.book, genre: this.book.genre };
-        const response = await this.$ajax.post('https://bujist.pythonanywhere.com/api/book/', newBook);
+        const response = await this.$ajax.post('https://sdkmynikita.pythonanywhere.com/api/book/', newBook);
         this.$emit("create", response.data);
         this.closeForm();
       } catch (error) {

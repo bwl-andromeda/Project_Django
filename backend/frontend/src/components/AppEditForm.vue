@@ -84,7 +84,7 @@ export default {
   methods: {
     async updateBook() {
       try {
-        const response = await this.$ajax.put(`https://bujist.pythonanywhere.com/api/book/${this.book.id}/`, this.book);
+        const response = await this.$ajax.put(`https://sdkmynikita.pythonanywhere.com/api/book/${this.book.id}/`, this.book);
         this.$emit("update", response.data);
         this.closeForm();
       } catch (error) {

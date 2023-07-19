@@ -48,7 +48,7 @@ export default {
     },
     async fetchAuthors() {
       try {
-        const response = await this.$ajax.get('https://bujist.pythonanywhere.com/api/author/');
+        const response = await this.$ajax.get('https://sdkmynikita.pythonanywhere.com/api/author/');
         this.authors = response.data;
       } catch (error) {
         console.error('Ошибка при получении списка авторов:', error);
@@ -56,7 +56,7 @@ export default {
     },
     async fetchLanguages() {
       try {
-        const response = await this.$ajax.get('https://bujist.pythonanywhere.com/api/language/');
+        const response = await this.$ajax.get('https://sdkmynikita.pythonanywhere.com/api/language/');
         this.languages = response.data;
       } catch (error) {
         console.error('Ошибка при получении списка языков:', error);
@@ -64,7 +64,7 @@ export default {
     },
     async addBook(newBook) {
       try {
-        const response = await this.$ajax.post('https://bujist.pythonanywhere.com/api/book/', newBook);
+        const response = await this.$ajax.post('https://sdkmynikita.pythonanywhere.com/api/book/', newBook);
         this.books.push(response.data);
         this.showForm = false;
       } catch (error) {
@@ -73,7 +73,7 @@ export default {
     },
     async deleteBook(book) {
       try {
-        await this.$ajax.delete(`https://bujist.pythonanywhere.com/api/book/${book.id}/`);
+        await this.$ajax.delete(`https://sdkmynikita.pythonanywhere.com/api/book/${book.id}/`);
         this.books = this.books.filter((item) => item.id !== book.id);
       } catch (error) {
         console.error('Ошибка при удалении книги:', error);
@@ -81,7 +81,7 @@ export default {
     },
     async updateBook(updatedBook) {
       try {
-        const response = await this.$ajax.put(`https://bujist.pythonanywhere.com/api/book/${updatedBook.id}/`, updatedBook);
+        const response = await this.$ajax.put(`https://sdkmynikita.pythonanywhere.com/api/book/${updatedBook.id}/`, updatedBook);
         const index = this.books.findIndex((item) => item.id === response.data.id);
         if (index !== -1) {
           this.books.splice(index, 1, response.data);

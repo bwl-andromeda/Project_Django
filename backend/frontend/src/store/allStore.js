@@ -21,7 +21,7 @@ export const allStore = {
     },
     actions: {
         async login({commit}, {username, password, router}) {
-            const response = await axios.post('https://bujist.pythonanywhere.com/api-token-auth/', {
+            const response = await axios.post('https://sdkmynikita.pythonanywhere.com/api-token-auth/', {
                 username: username,
                 password: password,
             })

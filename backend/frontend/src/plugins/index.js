@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '@/store';
 
 const instance = axios.create({
-    baseURL: 'https://bujist.pythonanywhere.com/'
+    baseURL: 'https://sdkmynikita.pythonanywhere.com/'
 });
 
 instance.interceptors.request.use(
